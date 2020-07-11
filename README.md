@@ -18,6 +18,13 @@
 </a>
 </p>
 
+### Known Issue: 
+
+On some debian setups, you can't grep stderr like in all other enviroments, for an unknown reason? Asked in #debian as well without any answer yet. 
+So until I  know why this happens, please set a custom value in  THREADS= in ~/.config/emagnet/emagnet.conf if you wont download any files.
+
+     xargs --show-limits -s 1 2>&1|grep -i "parallelism"|awk '{print $8}'  
+     
 ### About: 
 
 Emagnet is a very powerful tool for it's purpose wich is to capture  email addresses and passwords from leaked databases uploaded on pastebin. It's almost impossible to find leaked passwords when they are out of list on pastebin.com. Either they have been deleted by pastebin's techs or the uploads is just one in the crowd. To be honest it's easier to find a needle in a haystack then find outdated uploads on pastebin w
