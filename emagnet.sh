@@ -1010,13 +1010,13 @@ emagnet_run4ever() {
 
 emagnet_first_run() {
 if ! [[ -f "$CONF" ]]; then
-        emagnet_required_stuff
         emagnet_conf
-        emagnet_required_tools
-        emagnet_version
+        emagnet_required_stuff
         emagnet_mustbefilled
         emagnet_paths
         emagnet_I_was_banned
+        emagnet_required_tools
+        emagnet_version
         timeout 2 ping -t 1 -c 1 nr1.nu &> /dev/null
         [[ "$?" -gt "0" ]] && sed -i '40d' $CONF;sed -i '40 i MYIP=127.0.0.1' $CONF || wip
         emagnet_conf
@@ -1025,11 +1025,11 @@ fi
 }
 
 emagnet_search() {
-	emagnet_required_tools
     dt="$(date +%d%m%y)"
     emagnet_conf
     emagnet_clear
     emagnet_banner
+    emagnet_required_tools
     echo -e "           * * * * *  EMAGNET SEARCH MENU  * * * * * \n"
     echo -e "=================================================================\n"
     echo -e " [1] - Email Addresses"
@@ -1230,13 +1230,13 @@ case "${1}" in
         emagnet_check_pastebin # Check if everything ARE ok and if we are allowed to visit pastebin before we doing anything
         emagnet_iconnection
         emagnet_first_run
-        emagnet_required_tools
         emagnet_distro
         sed -i 's/GBRUTEFORCE=true/GBRUTEFORCE=false/g' "$CONF"
         sed -i 's/SBRUTEFORCE=true/SBRUTEFORCE=false/g' "$CONF"
         sed -i 's/PBRUTEFORCE=true/PBRUTEFORCE=false/g' "$CONF"
         sed -i 's/IBRUTEFORCE=true/IBRUTEFORCE=false/g' "$CONF"
         sed -i 's/RBRUTEFORCE=true/RBRUTEFORCE=false/g' "$CONF"
+        emagnet_required_tools
         emagnet_run4ever
 		  ;;
       "-S"|"-search"|"--search")
@@ -1245,9 +1245,9 @@ case "${1}" in
         ;;
 
       "-g"|"-bruteforce"|"--bruteforce")
-          emagnet_required_tools
           emagnet_iconnection
           emagnet_first_run
+          emagnet_required_tools
           sed -i 's/GBRUTEFORCE=true/GBRUTEFORCE=false/g' "$CONF"
           sed -i 's/SBRUTEFORCE=true/SBRUTEFORCE=false/g' "$CONF"
           sed -i 's/PBRUTEFORCE=true/PBRUTEFORCE=false/g' "$CONF"
@@ -1403,16 +1403,16 @@ fi
                 ;;
 
       "-i"|"--ip"|"-ip"|"ip")
-                emagnet_required_tools
                 emagnet_conf
                 emagnet_iconnection
+                emagnet_required_tools
                 echo "The IP You will use when visiting pastbin:"
                 if [[ $PROXY = "true" ]]; then
                 CURL="curl -s -x socks5h://$PROXYHOST:$PROXYPORT ";
                 else
-                CURL="curl -s "
+                CURL="curl -s"
                 fi
-                echo -e "IP : $($CURL -s $WIP)"
+                echo -e "IP : $($CURL -s https://nr1.nu/i/)"
                 ;;
 
       "-h"|"--help"|"-help"|"help")
