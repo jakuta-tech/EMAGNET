@@ -68,7 +68,6 @@ if ! [[ -f "$HOME/.config/emagnet/emagnet.conf" ]]; then
     mkdir -p "$HOME/.config/emagnet/tmp"
     cp "./emagnet.conf" "$HOME/.config/emagnet/" &> /dev/null
 fi
-
     CONF="$HOME/.config/emagnet/emagnet.conf"
     source "$CONF" &> /dev/null
 }
@@ -1142,13 +1141,21 @@ fi
 #### This is stats function when you using emagnet -s for count stats.......####
 ################################################################################
 emagnet_stats() {
-   emagnet_clear;emagnet_banner;emagnet_conf
+   emagnet_clear
+   emagnet_banner
+   emagnet_conf
    printf "Please wait..."
-   TOTALFILES=$(ls $EMAGNETARCHIVE/all-files | wc -l)
-   TEMAILFILES=$(grep -rEiEio '\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b' $EMAGNETARCHIVE/all-files | cut -d: -f1|uniq|sort| wc -l)
-   TPASSWORDFILES=$(grep -rEiEio "\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,6}\b:...*" $EMAGNETARCHIVE/all-files|awk '{print $1}'|cut -d: -f1|uniq|grep -v '"'\|','\|'<'\|'>'|uniq|sort|wc -l)
-   TEMAILS=$(grep -rEiEio "\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,6}\b" $EMAGNETARCHIVE/all-files|awk -F, '!seen[$1]++'|wc -l)
-   TPASSWORDS=$(grep -rEiEio "\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,6}\b:...*" $EMAGNETARCHIVE/all-files|awk -F, '!seen[$1]++'|awk '{print $1}'|cut -d: -f2,3|uniq|grep -v ' '\|'/'\|'"'\|','\|'<'\|'>'|wc -l)
+   ARCHIVE_EMPTY="$(ls $EMAGNETARCHIVE|wc -l)"
+   if [[ "$ARCHIVE_EMPTY" = "0" ]]; then
+    export ARCHIVE_DIR="$EMAGNETHOME";
+   else 
+    export ARCHIVE_DIR="$EMAGNETARCHIVE/all-files"
+     fi
+   TOTALFILES=$(ls $ARCHIVE_DIR | wc -l)
+   TEMAILFILES=$(grep -rEiEio '\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b' $ARCHIVE_DIR | cut -d: -f1|uniq|sort| wc -l)
+   TPASSWORDFILES=$(grep -rEiEio "\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,6}\b:...*" $ARCHIVE_DIR|awk '{print $1}'|cut -d: -f1|uniq|grep -v '"'\|','\|'<'\|'>'|uniq|sort|wc -l)
+   TEMAILS=$(grep -rEiEio "\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,6}\b" $ARCHIVE_DIR|awk -F, '!seen[$1]++'|wc -l)
+   TPASSWORDS=$(grep -rEiEio "\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,6}\b:...*" $ARCHIVE_DIR|awk -F, '!seen[$1]++'|awk '{print $1}'|cut -d: -f2,3|uniq|grep -v ' '\|'/'\|'"'\|','\|'<'\|'>'|wc -l)
    emagnet_clear; emagnet_banner;
    printf '+ Please wait, counting data                              [\e[1;32mDONE\e[0m]'
    sleep 1;emagnet_clear;emagnet_banner;
