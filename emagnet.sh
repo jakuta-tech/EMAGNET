@@ -843,7 +843,7 @@ fi
 
 emagnet_check_pastebin
 if [[ "$?" = "0" ]]; then
-     
+
      printf "Downloading $(cat $HOME/.config/emagnet/tmp/.emagnet-syntaxes-urls|wc -l) ${SYNTAX2DL} files.."
      mkdir -p "$EMAGNETSYNTAX/$SYNTAX2DL"
  else
@@ -876,7 +876,7 @@ fi
 # since patebin now have filtered default syntax 
 # "text" from being listed, lmao :)
 source "$HOME/.config/emagnet/emagnet.conf" &> /dev/null
-curl -H "$USERAGENT" -Ls "https://nr1.nu/emagnet/pastebin/2020-07-15/pastebin.txt"|sort|awk '!seen[$0]++' > "$HOME/.config/emagnet/tmp/.emagnet-temp1"
+curl -H "$USERAGENT" -Ls "$PASTEBIN"|sort|awk '!seen[$0]++' > "$HOME/.config/emagnet/tmp/.emagnet-temp1"
 ls -1 "$EMAGNETALL"|sort|awk '!seen[$0]++'|sed 's/^/https:\/\/pastebin.com\/raw\//g' > "$HOME/.config/emagnet/tmp/.emagnet-temp2"
 grep  -v -x -F -f "$HOME/.config/emagnet/tmp/.emagnet-temp2" "$HOME/.config/emagnet/tmp/.emagnet-temp1"|awk -F, '!seen[$1]++' > "$HOME/.config/emagnet/tmp/.emagnet-download"
 
@@ -1144,6 +1144,7 @@ emagnet_stats() {
    emagnet_clear
    emagnet_banner
    emagnet_conf
+   emagnet_paths
    printf "Please wait..."
    ARCHIVE_EMPTY="$(ls $EMAGNETARCHIVE|wc -l)"
    if [[ "$ARCHIVE_EMPTY" = "0" ]]; then
@@ -1237,6 +1238,7 @@ case "${1}" in
 
      "emagnet"|"-e"|"-emagnet"|"--emagnet")
         emagnet_conf           # Source emagnet.conf before we do anything else so we know variables are used, like user-agent before check_pastebin
+        emagnet_paths          # We must create dirs before we can write to folders that is required for check_pastebin
         emagnet_check_pastebin # Check if everything ARE ok and if we are allowed to visit pastebin before we doing anything
         emagnet_iconnection
         emagnet_first_run
