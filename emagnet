@@ -876,7 +876,7 @@ fi
 # since patebin now have filtered default syntax 
 # "text" from being listed, lmao :)
 source "$HOME/.config/emagnet/emagnet.conf" &> /dev/null
-curl -H "$USERAGENT" -Ls "$PASTEBIN"|sort|awk '!seen[$0]++' > "$HOME/.config/emagnet/tmp/.emagnet-temp1"
+curl -H "$USERAGENT" -Ls "$PASTEBIN"|sort|grep '^https'|awk '!seen[$0]++' > "$HOME/.config/emagnet/tmp/.emagnet-temp1"
 ls -1 "$EMAGNETALL"|sort|awk '!seen[$0]++'|sed 's/^/https:\/\/pastebin.com\/raw\//g' > "$HOME/.config/emagnet/tmp/.emagnet-temp2"
 grep  -v -x -F -f "$HOME/.config/emagnet/tmp/.emagnet-temp2" "$HOME/.config/emagnet/tmp/.emagnet-temp1"|awk -F, '!seen[$1]++' > "$HOME/.config/emagnet/tmp/.emagnet-download"
 
