@@ -1,8 +1,8 @@
 #!/bin/bash
-###############################################################################
+################################################################################
 ###############################################################################
 ###                                                                         ###
-### Author: wuseman <wuseman@nr1.nu>                                        ###
+#### Author: wuseman <wuseman@nr1.nu>                                        ###
 ### IRC: Freenode @ wuseman                                                 ###
 ###                                                                         ###
 ###############################################################################
@@ -274,7 +274,7 @@ Usage: ./$basename$0 [--author] [--emagnet] [--option] .....
   -m, --merge         Merge all log files from incoming to archive
   -M, --move          Move all downloaded files to archive
   -s, --spam          Send email to all targets 
-                      - Send email to targets in logs/emails-from-patebin.txt
+                      - Send email to targets in logs/emails-from-pastebin.txt
                       - Choose and set file by ./$basename$0 -s /text/to/send.txt
   -S, --search        Search for email addresses and various stuff
   -q, --quiet         Run emagnet in a screen
@@ -876,7 +876,7 @@ fi
 # since patebin now have filtered default syntax 
 # "text" from being listed, lmao :)
 source "$HOME/.config/emagnet/emagnet.conf" &> /dev/null
-curl -H "$USERAGENT" -Ls "$PASTEBIN"|sort|awk '!seen[$0]++' > "$HOME/.config/emagnet/tmp/.emagnet-temp1"
+curl -H "$USERAGENT" -Ls "$PASTEBIN"|sort|grep '^https'|awk '!seen[$0]++' > "$HOME/.config/emagnet/tmp/.emagnet-temp1"
 ls -1 "$EMAGNETALL"|sort|awk '!seen[$0]++'|sed 's/^/https:\/\/pastebin.com\/raw\//g' > "$HOME/.config/emagnet/tmp/.emagnet-temp2"
 grep  -v -x -F -f "$HOME/.config/emagnet/tmp/.emagnet-temp2" "$HOME/.config/emagnet/tmp/.emagnet-temp1"|awk -F, '!seen[$1]++' > "$HOME/.config/emagnet/tmp/.emagnet-download"
 
